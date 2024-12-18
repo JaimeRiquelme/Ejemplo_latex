@@ -6,6 +6,12 @@
 \usepackage{hyperref}
 \usepackage{fancyhdr}
 \usepackage{longtable} % Añadido para soportar tablas largas
+\usepackage[margin=2.5cm]{geometry} % Control de márgenes
+\usepackage{array}
+
+% Configuración de tablas
+\newcolumntype{P}[1]{>{\raggedright\arraybackslash}p{#1}}
+\setlength{\parindent}{0pt}
 
 \begin{document}
 
@@ -22,7 +28,7 @@
 \newpage
 
 \section{Información del Proyecto}
-\begin{tabular}{|p{5cm}|p{8cm}|}
+\begin{tabular}{|P{5cm}|P{10cm}|}
 \hline
 \textbf{Empresa/Organización} & {{empresaNombre}} \\
 \hline

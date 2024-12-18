@@ -78,8 +78,8 @@ public class LatexService {
 
     private String populateTemplate(String template, DocumentData data) {
         String tableContent = data.getRolesResponsabilidades() == null ? "" : 
-            "\\begin{center}\n\\begin{longtable}{|c|c|c|c|}\n\\hline\n" +
-            "\\textbf{ID} & \\textbf{Rol} & \\textbf{Función} & \\textbf{Responsabilidad} \\\\\n\\hline\n" +
+            "\\begin{center}\n\\begin{longtable}{|p{2cm}|p{4cm}|p{4cm}|p{4cm}|}\n\\hline\n" +
+            "\\textbf{ID} & \\textbf{Rol} & \\textbf{Función} & \\textbf{Responsabilidad} \\\\\n\\hline\\endhead\n" +
             String.join("\n", data.getRolesResponsabilidades().split("&")).lines()
                 .map(row -> row.trim().isEmpty() ? "" : 
                     String.join(" & ", row.split(",")) + " \\\\\n\\hline")
