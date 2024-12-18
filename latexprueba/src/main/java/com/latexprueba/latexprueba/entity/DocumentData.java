@@ -26,4 +26,14 @@ public class DocumentData {
     @Lob
     @Column(length = 1000000)
     private byte[] pdfContent;
+
+    private String rolesResponsabilidades;
+
+    public String getRolesResponsabilidades() {
+        return rolesResponsabilidades;
+    }
+
+    public void setRolesResponsabilidades(String rolesResponsabilidades) {
+        this.rolesResponsabilidades = rolesResponsabilidades;
+    }
 }

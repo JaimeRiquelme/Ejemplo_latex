@@ -114,19 +114,61 @@ public class LatexService {
         return finalPdfName;
     }
 
+    private String generateLatexTable(String tableData) {
+        if (tableData == null || tableData.trim().isEmpty()) {
+            return ""; // Retorna tabla vacía si no hay datos
+        }
+
+        StringBuilder latexTable = new StringBuilder();
+        latexTable.append("\\begin{center}\n")
+                 .append("\\begin{longtable}{|c|c|c|c|}\n")
+                 .append("\\hline\n")
+                 .append("\\textbf{ID} & \\textbf{Rol} & \\textbf{Función} & \\textbf{Responsabilidad} \\\\\n")
+                 .append("\\hline\n");
+
+        // Dividir el texto en filas usando &
+        String[] rows = tableData.split("&");
+        
+        for (String row : rows) {
+            if (!row.trim().isEmpty()) {
+                // Dividir cada fila en columnas usando la coma
+                String[] columns = row.split(",");
+                if (columns.length >= 4) {
+                    latexTable.append(columns[0]).append(" & ")
+                             .append(columns[1]).append(" & ")
+                             .append(columns[2]).append(" & ")
+                             .append(columns[3]).append(" \\\\\n")
+                             .append("\\hline\n");
+                }
+            }
+        }
+
+        latexTable.append("\\end{longtable}\n")
+                 .append("\\end{center}\n");
+
+        return latexTable.toString();
+    }
+
     private String populateTemplate(String template, DocumentData data) {
-        return Map.of(
+        // Generar la tabla LaTeX
+        String tableContent = generateLatexTable(data.getRolesResponsabilidades());
+        
+        // Crear el mapa con todos los reemplazos, incluyendo la tabla
+        Map<String, String> replacements = Map.of(
             "{{nombreProyecto}}", data.getNombreProyecto(),
             "{{idProyecto}}", data.getIdProyecto(),
             "{{fechaElaboracion}}", data.getFechaElaboracion(),
             "{{empresaNombre}}", data.getEmpresaNombre(),
             "{{clienteNombre}}", data.getClienteNombre(),
             "{{patrocinador}}", data.getPatrocinador(),
-            "{{director}}", data.getDirector()
-        ).entrySet().stream()
-        .reduce(template,
-            (acc, entry) -> acc.replace(entry.getKey(), entry.getValue()),
-            (s1, s2) -> s1);
+            "{{director}}", data.getDirector(),
+            "{{tablaRoles}}", tableContent
+        );
+
+        return replacements.entrySet().stream()
+            .reduce(template,
+                (acc, entry) -> acc.replace(entry.getKey(), entry.getValue()),
+                (s1, s2) -> s1);
     }
 
     public DocumentData getDocumentById(Long id) {
